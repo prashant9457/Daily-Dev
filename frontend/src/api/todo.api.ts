@@ -25,3 +25,11 @@ export async function deleteTodo(id: string) {
   const response = await api.delete(`/todos/${id}`);
   return response.data;
 }
+
+export async function toggleTodo(id: string , completed: boolean) {
+  const response = await api.patch(`/todos/${id}`,{
+    completed,
+  })
+
+  return response.data;
+}
