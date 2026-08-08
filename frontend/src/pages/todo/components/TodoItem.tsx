@@ -5,10 +5,9 @@ import { useToggleTodo } from "@/hooks/useToggleTodo";
 
 interface TodoItemProps {
   todo: Todo;
-  index: number;
 }
 
-export default function TodoItem({ todo, index }: TodoItemProps) {
+export default function TodoItem({ todo }: TodoItemProps) {
   const { mutate , isPending} = useToggleTodo();
 
   function handleToggle() {
@@ -28,7 +27,7 @@ export default function TodoItem({ todo, index }: TodoItemProps) {
             disabled={isPending}
           />
         </div>
-        <h1>#{index} {todo.title}</h1>
+        <h1>{todo.title}</h1>
 
         <CardDescription className="mt-2">{todo.description}</CardDescription>
       </CardContent>
