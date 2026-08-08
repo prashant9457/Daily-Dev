@@ -1,7 +1,11 @@
-import { Card, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { Todo } from "@/types/todo";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToggleTodo } from "@/hooks/useToggleTodo";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Item } from "@/components/ui/item";
+import { Button } from "@/components/ui/button";
+import PriorityTag from "./PriorityTag";
 
 interface TodoItemProps {
   todo: Todo;
@@ -27,9 +31,14 @@ export default function TodoItem({ todo }: TodoItemProps) {
             disabled={isPending}
           />
         </div>
-        <h1>{todo.title}</h1>
-
-        <CardDescription className="mt-2">{todo.description}</CardDescription>
+        <HoverCard>
+          <HoverCardTrigger delay={100} closeDelay={200}> {todo.title} </HoverCardTrigger>
+          {
+            !todo.description || <HoverCardContent className="w-64 max-h-32 overflow-y-auto" > {todo.description} </HoverCardContent>
+          }
+          <Item>{todo.priority}</Item>
+        </HoverCard>
+        <PriorityTag priority={todo.priority} />
       </CardContent>
     </Card>
   );

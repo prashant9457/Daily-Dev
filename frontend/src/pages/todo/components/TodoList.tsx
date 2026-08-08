@@ -15,7 +15,7 @@ export default function TodoList({ todos }: TodoListProps) {
                 grid-cols-1
                 sm:grid-cols-2
                 lg:grid-cols-3">
-      {sortedTodos.map((todo, count) => (
+      {sortedTodos.map((todo) => (
         <>
           <TodoItem
           key={todo._id}
