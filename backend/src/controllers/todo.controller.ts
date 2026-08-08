@@ -51,10 +51,8 @@ export async function createTodo(req: Request, res: Response) {
 
 export async function updateTodo(req: Request, res: Response) {
   try {
-    const { id } = req.params;
-
-    const updatedTodo = await Todo.findByIdAndUpdate(
-      id,
+    const todo = await Todo.findByIdAndUpdate(
+      req.params.id, 
       req.body,
       {
         new: true,
@@ -62,23 +60,23 @@ export async function updateTodo(req: Request, res: Response) {
       }
     );
 
-    if (!updatedTodo) {
+    if(!todo) {
       return res.status(404).json({
         success: false,
-        message: "Todo not found",
-      });
+        message: "todo not found",
+      })
     }
 
     return res.status(200).json({
       success: true,
-      data: updatedTodo,
-    });
+      data: todo, 
+    })
 
   } catch (error) {
     console.error(error);
-
+    
     return res.status(500).json({
-      success: false,
+      sucess: false,
       message: "Failed to update todo",
     });
   }

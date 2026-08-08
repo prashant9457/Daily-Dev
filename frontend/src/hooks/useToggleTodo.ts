@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleTodo } from "@/api/todo.api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useToggleTodo() {
   const queryClient = useQueryClient();
@@ -8,14 +8,14 @@ export function useToggleTodo() {
     mutationFn: ({
       id,
       completed,
-    }: {
-      id: string;
-      completed: boolean;
-    }) => toggleTodo(id, completed),
+    } : {
+      id : string;
+      completed : boolean
+    }) => toggleTodo(id, completed) ,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["todos"],
+        queryKey: ['todos'],
       });
     },
   });
