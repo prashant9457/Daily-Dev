@@ -7,9 +7,9 @@ interface PriorityTagProps {
 
 export default function PriorityTag ({priority} : PriorityTagProps) {
     const priorityStyles = {
-        low: "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300",
-        medium: "bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
-        high: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300",
+        low: "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300 rounded-lg",
+        medium: "bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 rounded-lg",
+        high: "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300 rounded-lg",
     } 
 
     return (

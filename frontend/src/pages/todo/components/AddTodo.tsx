@@ -31,26 +31,26 @@ export default function AddTodo() {
   }
 
   return (
-    <Card className="max-w-3xl mx-auto mb-8">
+    <Card className="max-w-3xl mx-auto mb-8 rounded-lg">
       <CardHeader>
         <CardTitle>Add New Todo</CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        <Input
+      <CardContent className="space-y-4 ">
+        <Input className="rounded-lg"
           placeholder="Enter title..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <Textarea
+        <Textarea className="rounded-lg"
           placeholder="Enter description..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        <Button
-          className="w-full"
+        <Button 
+          className="w-full rounded-lg"
           onClick={handleSubmit}
           disabled={isPending}
         >
