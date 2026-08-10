@@ -1,19 +1,37 @@
+import Joi from "joi";
 import mongoose from "mongoose";
 
-// it is an object of mongoose.Schema class
-const todoSchema = new mongoose.Schema( 
-    {
+export const Todo = mongoose.model("Todo", new mongoose.Schema({
         title: {
             type: String,
-            required: [true, "Title is Required"],
+            required: true,
             trim: true,
-            maxlength: [100, "Title cannot exceed 100 characters"],
+            minLength: 3,
+            maxLength: 100
         },
+
         description: {
             type: String,
             trim: true,
             default: "",
-            maxlength: 1500
+            maxLength: 1000
+        },
+
+        priority: {
+            type: String,
+            enum: ["low", "medium", "high"],
+            default: "medium"
+        },
+
+        category: {
+            type: String,
+            trim: true,
+            maxLength: 50,
+            default: "General"
+        },
+
+        dueDate: {
+            type: Date
         },
 
         completed: {
@@ -21,38 +39,21 @@ const todoSchema = new mongoose.Schema(
             default: false
         },
 
-        priority: { // user should not set priority to banana
-            type: String,
-            enum: ["low", "medium", "high"],
-            default: "medium"
-        },
-
-        category: { // why not enum here?
-            type: String,
-            trim: true,
-            default: "General"
-        },    
-
-        dueDate: {
-            type: Date
-        },
-
         archived: {
             type: Boolean,
             default: false
-        },
-
-    },
-    {   // as a second argument to schema Mongoose handles createdAt and updatedAs type = Date
-        timestamps: true, 
-    }
+        }
+    })
 );
 
-todoSchema.index({
-    title: "text"
-});
+export default function validateTodo(todo: any) {
+    const schema = Joi.object({
+        title: Joi.string().trim().min(3).max(100).required(),
+        description: Joi.string().trim().max(1000).optional().default(""),
+        priority: Joi.string().valid("low", "medium", "high").default("medium"),
+        category: Joi.string().trim().max(50).default("General"),
+        dueDate: Joi.date().optional()
+    });
 
-// model is like a factory to the todoSchema object which is a mongoose.model class
-const Todo = mongoose.model("Todo", todoSchema);
-
-export default Todo;
+    return schema.validate(todo);
+}
