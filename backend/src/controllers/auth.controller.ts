@@ -19,9 +19,8 @@ export async function loginUser(req: Request, res: Response) {
         const validPassword = await bcrypt.compare(req.body.password, user.password);
         if(!validPassword) return res.status(400).send("Invalid email or Password");
 
-        const token = jwt.sign({_id: user._id}, config.get('jwtPrivateKey'));
-
-        res.send(token);
+        const token = user.generateAuthToken();
+        return res.header('x-auth-token', token).status(201).send(_.pick(user, ['_id','name', 'email']));
 
     } catch (error) {
         console.error(error);

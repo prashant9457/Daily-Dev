@@ -24,8 +24,11 @@ export async function registerUser(req: Request, res: Response) {
         user.password = await bcrypt.hash(user.password, salt);
         await user.save();
         
+        const token = user.generateAuthToken();
+        
         // picking only valid thigns to resend to client i.e. not password
-        return res.status(201).send(_.pick(user, ['_id','name', 'email']));
+        return res.header('x-auth-token', token).status(201).send(_.pick(user, ['_id','name', 'email']));
+    
     } catch (error) {
         console.error(error);
 

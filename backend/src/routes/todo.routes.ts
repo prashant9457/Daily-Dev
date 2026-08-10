@@ -1,4 +1,5 @@
 import { Router } from "express";
+import auth from '../middleware/auth.js'
 
 import {
   getTodos,
@@ -10,7 +11,7 @@ import {
 const router = Router();
 
 router.get("/", getTodos);
-router.post("/", createTodo);
+router.post("/", auth, createTodo);
 router.patch("/:id", updateTodo);
 router.delete("/:id", deleteTodo);
 
