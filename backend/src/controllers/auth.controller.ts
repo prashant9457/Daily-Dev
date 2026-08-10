@@ -1,7 +1,9 @@
 import type { Request, Response } from "express";
 import { User, validateLogin } from "../models/user.model.js";
 import _  from "lodash"; // type error to be fixed with "npm install -D @types/lodash"
-import bcrypt from 'bcrypt'; // same as above
+import bcrypt from 'bcrypt'; 
+import jwt from 'jsonwebtoken';
+import  config  from "config";
 
 export async function loginUser(req: Request, res: Response) {
     try {
@@ -17,7 +19,9 @@ export async function loginUser(req: Request, res: Response) {
         const validPassword = await bcrypt.compare(req.body.password, user.password);
         if(!validPassword) return res.status(400).send("Invalid email or Password");
 
-        res.send(true);
+        const token = jwt.sign({_id: user._id}, config.get('jwtPrivateKey'));
+
+        res.send(token);
 
     } catch (error) {
         console.error(error);
