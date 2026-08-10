@@ -1,31 +1,24 @@
 import type { Request, Response } from "express";
-import validateUser, { User } from "../models/user.model.js";
+import { User, validateLogin } from "../models/user.model.js";
+import _  from "lodash"; // type error to be fixed with "npm install -D @types/lodash"
+import bcrypt from 'bcrypt'; // same as above
 
-export async function registerUser(req: Request, res: Response) {
+export async function loginUser(req: Request, res: Response) {
     try {
-        const { error } = validateUser(req.body);
+        const { error } = validateLogin(req.body);
 
         if (error) {
             return res.status(400).send(error.details[0]?.message);
         }
 
-        let user = await User.findOne({
-            email: req.body.email
-        });
+        let user = await User.findOne({email: req.body.email});
+        if (!user) return res.status(400).send("Invalid email or Password");
+        
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if(!validPassword) return res.status(400).send("Invalid email or Password");
 
-        if (user) {
-            return res.status(400).send("User already registered.");
-        }
+        res.send(true);
 
-        user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        });
-
-        await user.save();
-
-        return res.status(201).send(user);
     } catch (error) {
         console.error(error);
 

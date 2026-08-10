@@ -33,3 +33,23 @@ export default function validateUser(user: {name: string, email: string, passwor
     
     return schema.validate(user); // new Joi syntax
 }
+
+export function validateLogin(user: {
+    email: string;
+    password: string;
+}) {
+    const schema = Joi.object({
+        email: Joi.string()
+            .min(5)
+            .max(255)
+            .required()
+            .email(),
+
+        password: Joi.string()
+            .min(5)
+            .max(1024)
+            .required()
+    });
+
+    return schema.validate(user);
+}
