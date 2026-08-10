@@ -46,7 +46,7 @@ export const Todo = mongoose.model("Todo", new mongoose.Schema({
     })
 );
 
-export default function validateTodo(todo: any) {
+export default function validateTodo(todo: {title: string, description: string, priority: string, category: string}) {
     const schema = Joi.object({
         title: Joi.string().trim().min(3).max(100).required(),
         description: Joi.string().trim().max(1000).optional().default(""),

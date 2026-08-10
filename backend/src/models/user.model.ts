@@ -24,7 +24,7 @@ export const User = mongoose.model('User', new mongoose.Schema({
     }
 }));
 
-export default function validateUser(user: any) {
+export default function validateUser(user: {name: string, email: string, password: string}) {
     const schema = Joi.object({
         name: Joi.string().min(5).max(50).required(),
         email: Joi.string().min(5).max(255).required().email(),
