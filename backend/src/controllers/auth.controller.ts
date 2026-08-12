@@ -2,8 +2,7 @@ import type { Request, Response } from "express";
 import { User, validateLogin } from "../models/user.model.js";
 import _  from "lodash"; // type error to be fixed with "npm install -D @types/lodash"
 import bcrypt from 'bcrypt'; 
-import jwt from 'jsonwebtoken';
-import  config  from "config";
+
 
 export async function loginUser(req: Request, res: Response) {
     try {
