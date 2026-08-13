@@ -1,5 +1,6 @@
 import { Router } from "express";
-import auth from '../middleware/auth.js'
+// @ts-ignore
+import auth from '../middleware/auth.js';
 
 import {
   getTodos,
