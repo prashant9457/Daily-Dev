@@ -25,7 +25,6 @@ export default function Home() {
       <div className="w-64">
         <Button onClick={() => navigate("/todo")}>Todo App</Button>
         <Button onClick={() => navigate("/pomodoro")}>Pomodoro</Button>
-        <Button onClick={() => navigate("/login")}>Login</Button>
         <Button>Mini project 2</Button>
       </div>
     </div>

@@ -10,6 +10,7 @@ interface IUser {
     name: string;
     email: string;
     password: string;
+    username: string;
     generateAuthToken(): string;
 }
 
@@ -19,7 +20,6 @@ export const userSchema = new mongoose.Schema<IUser>({
         required: true,
         minLength: 5,
         maxLength: 50,
-        unique: true
     },
     email: {
         type: String,
@@ -33,6 +33,14 @@ export const userSchema = new mongoose.Schema<IUser>({
         required: true,
         minLength: 5,
         maxLength: 1024,
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        minLength: 3,
+        maxLength: 30,
     }
 });
 
@@ -48,6 +56,7 @@ export const User = mongoose.model('User', userSchema);
 export default function validateUser(user: {name: string, email: string, password: string}) {
     const schema = Joi.object({
         name: Joi.string().min(5).max(50).required(),
+        username: Joi.string().min(3).max(30).required(),
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(5).max(1024).required(),
     });
@@ -55,21 +64,10 @@ export default function validateUser(user: {name: string, email: string, passwor
     return schema.validate(user); // new Joi syntax
 }
 
-export function validateLogin(user: {
-    email: string;
-    password: string;
-}) {
+export function validateLogin(user: { email: string; password: string; }) {
     const schema = Joi.object({
-        email: Joi.string()
-            .min(5)
-            .max(255)
-            .required()
-            .email(),
-
-        password: Joi.string()
-            .min(5)
-            .max(1024)
-            .required()
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(5).max(1024).required()
     });
 
     return schema.validate(user);
