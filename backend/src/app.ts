@@ -2,7 +2,8 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import todoRoutes from "./routes/todo.routes.js";
-import userRoutes from "./routes/auth.routes.js"
+import userRoutes from "./routes/user.routes.js"
+import authRoutes from "./routes/auth.routes.js"
 import config from "config";
 import cookieParser from "cookie-parser";
 
@@ -22,7 +23,8 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/todos", todoRoutes);
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
     res.send("Backend is running");

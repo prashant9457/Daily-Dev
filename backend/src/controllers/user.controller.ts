@@ -44,3 +44,28 @@ export async function registerUser(req: Request, res: Response) {
     }
 }
 
+export async function searchUser(req: Request, res: Response) {
+    try {
+        const username = req.query.username as string;
+
+        if(!username) {
+            return res.status(400).json({
+                message: "username must contain at least 2 characters",
+            });
+        }
+
+        const users = await User.find({
+            username: {
+                $regex: `^${username}`,
+                $options: "i",
+            },
+        }).select("_id name username").limit(10);
+
+        return res.status(200).json({data: users});
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({message: "Failed to search users"});
+    }
+    
+}
