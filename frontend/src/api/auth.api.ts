@@ -9,6 +9,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  username: string;
 }
 
 export async function loginUser(data: LoginData): Promise<User> {

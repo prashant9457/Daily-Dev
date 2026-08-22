@@ -26,7 +26,8 @@ export const userSchema = new mongoose.Schema<IUser>({
         required: true,
         minLength: 5,
         maxLength: 255,
-        unique: true
+        unique: true,
+        lowercase: true,
     },
     password: {
         type: String,
@@ -37,6 +38,7 @@ export const userSchema = new mongoose.Schema<IUser>({
     username: {
         type: String,
         required: true,
+        lowercase: true,
         unique: true,
         trim: true,
         minLength: 3,

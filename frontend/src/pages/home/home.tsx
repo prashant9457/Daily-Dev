@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "../../hooks/userCurrentUser";
 import Login from "../auth/Login";
 import { useLogout } from "@/hooks/useLogout";
+import UserSearch from "@/components/UserSearch";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ export default function Home() {
         <Button onClick={() => navigate("/pomodoro")}>Pomodoro</Button>
         <Button>Mini project 2</Button>
       </div>
+
+      <UserSearch></UserSearch>
     </div>
   );
 }

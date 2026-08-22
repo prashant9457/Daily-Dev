@@ -3,6 +3,10 @@ import validateUser, { User } from "../models/user.model.js";
 import _  from "lodash"; // type error to be fixed with "npm install -D @types/lodash"
 import bcrypt from 'bcrypt'; // same as above
 
+function escapeRegex(value: string) { // avoids .* to get all users
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); 
+}
+
 export async function registerUser(req: Request, res: Response) {
     try {
         const { error } = validateUser(req.body);
@@ -54,10 +58,12 @@ export async function searchUser(req: Request, res: Response) {
             });
         }
 
+        const search = escapeRegex(username);
+
         const users = await User.find({
             username: {
-                $regex: `^${username}`,
-                $options: "i",
+                $regex: `^${search}`,
+                $options: "i", //case insensitive
             },
         }).select("_id name username").limit(10);
 
