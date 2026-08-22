@@ -1,7 +1,7 @@
-import api from "./axios";
+import { axiosInstance } from "./apiClient";
 
 export async function getTodos() {
-  const response = await api.get("/todos");
+  const response = await axiosInstance.get("/todos");
   return response.data.data;
 }
 
@@ -12,22 +12,22 @@ export async function createTodo(data: {
   category?: string;
   dueDate?: Date;
 }) {
-  const response = await api.post("/todos", data);
+  const response = await axiosInstance.post("/todos", data);
   return response.data;
 }
 
 export async function updateTodo(id: string, data: object) {
-  const response = await api.patch(`/todos/${id}`, data);
+  const response = await axiosInstance.patch(`/todos/${id}`, data);
   return response.data;
 }
 
 export async function deleteTodo(id: string) {
-  const response = await api.delete(`/todos/${id}`);
+  const response = await axiosInstance.delete(`/todos/${id}`);
   return response.data;
 }
 
 export async function toggleTodo(id: string , completed: boolean) {
-  const response = await api.patch(`/todos/${id}`,{
+  const response = await axiosInstance.patch(`/todos/${id}`,{
     completed,
   })
 

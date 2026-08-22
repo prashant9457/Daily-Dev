@@ -12,7 +12,7 @@ const router = Router();
 
 router.get("/", auth, getTodos);
 router.post("/", auth, createTodo);
-router.patch("/:id", updateTodo);
-router.delete("/:id", deleteTodo);
+router.patch("/:id", auth, updateTodo);
+router.delete("/:id", auth, deleteTodo);
 
 export default router;

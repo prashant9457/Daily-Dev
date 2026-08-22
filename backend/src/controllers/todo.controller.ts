@@ -32,8 +32,9 @@ export async function createTodo(req: Request, res: Response) {
                 errors: result.error.details,
             });
         }
-
-        const todo = await Todo.create(result.value);
+        
+        // assign todo to valid user
+        const todo = await Todo.create({...result.value, userId: req.user._id});
 
         return res.status(201).json({
             success: true,
@@ -52,7 +53,10 @@ export async function createTodo(req: Request, res: Response) {
 export async function updateTodo(req: Request, res: Response) {
     try {
         const todo = await Todo.findByIdAndUpdate(
-            req.params.id,
+            {
+                _id: req.params.id,
+                userId: req.user._id,
+            },
             req.body,
             {
                 new: true,
@@ -85,7 +89,7 @@ export async function deleteTodo(req: Request, res: Response) {
     try {
         const { id } = req.params;
 
-        const deletedTodo = await Todo.findByIdAndDelete(id);
+        const deletedTodo = await Todo.findByIdAndDelete({userId: req.user._id});
 
         if (!deletedTodo) {
             return res.status(404).json({

@@ -9,8 +9,8 @@ export default function Todo() {
     return <> Loading ... </>
   }
 
-  if(error) {
-    return <> {error as Error}</>
+  if (error) {
+    return <p>{error.message}</p>;
   }
 
   return (
