@@ -9,6 +9,12 @@ export const Todo = mongoose.model("Todo", new mongoose.Schema({
             minLength: 3,
             maxLength: 100
         },
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            index: true,
+        },
 
         description: {
             type: String,

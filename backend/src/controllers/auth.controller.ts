@@ -19,7 +19,12 @@ export async function loginUser(req: Request, res: Response) {
         if(!validPassword) return res.status(400).send("Invalid email or Password");
 
         const token = user.generateAuthToken();
-        return res.header('x-auth-token', token).status(201).send(_.pick(user, ['_id','name', 'email']));
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+        })
+        return res.status(200).send(_.pick(user, ['_id','name', 'email']));
 
     } catch (error) {
         console.error(error);

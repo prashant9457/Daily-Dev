@@ -9,7 +9,7 @@ export default function Home() {
         todo App
       </Button>
       <Button className="w-64" onClick={() => navigate('/pomodoro')}>pomodoro</Button>
-      <Button className="w-64">mini project 1</Button>
+      <Button className="w-64">Login</Button>
       <Button className="w-64">mini project 2</Button>
     </div>
   );

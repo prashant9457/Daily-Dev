@@ -1,5 +1,4 @@
 import { Router } from "express";
-// @ts-ignore
 import auth from '../middleware/auth.js';
 
 import {
@@ -11,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get("/", getTodos);
+router.get("/", auth, getTodos);
 router.post("/", auth, createTodo);
 router.patch("/:id", updateTodo);
 router.delete("/:id", deleteTodo);

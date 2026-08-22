@@ -4,7 +4,9 @@ import validateTodo from "../models/todo.model.js";
 
 export async function getTodos(req: Request, res: Response) {
     try {
-        const todos = await Todo.find();
+        const todos = await Todo.find({
+            userId: req.user._id
+        });
 
         return res.status(200).json({
             success: true,
