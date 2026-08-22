@@ -33,3 +33,18 @@ export async function loginUser(req: Request, res: Response) {
     }
 }
 
+export async function getCurrentUser(req: Request, res: Response) {
+    try {
+
+        const user = await User.findById(req.user._id).select("_id name email")
+
+        if(!user) return res.status(404).send("User not found");
+
+        return res.status(200).send(user);
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).send("Failed to fetch user.");
+    }
+}

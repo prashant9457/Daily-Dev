@@ -12,6 +12,11 @@ export interface User {
 }
 
 export async function loginUser(data: LoginData): Promise<User> {
-  const response = await axiosInstance.post<User>( "/auth/login", data );
+  const response = await axiosInstance.post<User>("/auth/login", data );
+  return response.data;
+}
+
+export async function getCurrentUser() : Promise<User> {
+  const response = await axiosInstance.get<User>("/auth/me");
   return response.data;
 }
