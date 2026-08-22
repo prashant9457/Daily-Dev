@@ -48,3 +48,12 @@ export async function getCurrentUser(req: Request, res: Response) {
         return res.status(500).send("Failed to fetch user.");
     }
 }
+
+export function logoutUser(req: Request, res: Response) {
+    res.clearCookie("token");
+
+    return res.status(200).json({
+        success: true,
+        message: "logged out successfully",
+    });
+}

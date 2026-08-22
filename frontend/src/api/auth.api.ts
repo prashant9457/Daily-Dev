@@ -20,3 +20,8 @@ export async function getCurrentUser() : Promise<User> {
   const response = await axiosInstance.get<User>("/auth/me");
   return response.data;
 }
+
+export async function logoutUser() {
+  const response = await axiosInstance.post("/auth/logout");
+  return response.data;
+}
