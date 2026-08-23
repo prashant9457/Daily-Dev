@@ -3,6 +3,7 @@ import http from "http";
 import { WebSocketServer } from "ws";
 import { verifyToken } from "../utils/verifyToken.js";
 import type { AuthenticatedWebSocket } from "./types.js";
+import { addConnection, removeConnection } from "./presence.js";
 
 export function setupWebSocket(server: http.Server) {
     const wss = new WebSocketServer({
@@ -40,9 +41,11 @@ export function setupWebSocket(server: http.Server) {
 
     wss.on('connection', (socket: AuthenticatedWebSocket) => {
         console.log(`WebSocket client connected: ${socket.userId}`);
+        addConnection(socket);
 
         socket.on('close', ()=> {
             console.log(`WebSocket client disconnected: ${socket.userId}`);
+            removeConnection(socket);
         });
     });
 
