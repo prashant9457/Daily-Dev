@@ -4,6 +4,7 @@ import { useCurrentUser } from "../../hooks/userCurrentUser";
 import Login from "../auth/Login";
 import { useLogout } from "@/hooks/useLogout";
 import UserSearch from "@/components/UserSearch";
+import WebSocketTest from "@/components/WebSocketTest";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
+      <WebSocketTest/>
       {
         isLoading ? 
         (<p>Loading...</p>) :  user ? 

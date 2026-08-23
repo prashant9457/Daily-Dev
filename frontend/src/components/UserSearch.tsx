@@ -5,6 +5,7 @@ import type { User } from "@/api/auth.api";
 
 export default function UserSearch() {
   const [username, setUsername] = useState("");
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const debouncedUsername = useDebounce(username, 300);
 
@@ -22,12 +23,20 @@ export default function UserSearch() {
 
       {error && <p>Something went wrong</p>}
 
-      {data?.map((user : User) => (
-        <div key={user._id}>
-          <p>{user.name}</p>
+      {data?.map((user) => (
+        <div
+          key={user._id}
+          onClick={() => setSelectedUser(user)}
+        >
           <p>@{user.username}</p>
         </div>
       ))}
+
+      {selectedUser && (
+        <div>
+          Selected: @{selectedUser.username}
+        </div>
+      )}
     </div>
   );
 }
