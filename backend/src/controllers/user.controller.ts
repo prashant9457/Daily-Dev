@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import validateUser, { User } from "../models/user.model.js";
 import _  from "lodash"; // type error to be fixed with "npm install -D @types/lodash"
 import bcrypt from 'bcrypt'; // same as above
+import { isUserOnline } from "../websocket/presence.js";
 
 function escapeRegex(value: string) { // avoids .* to get all users
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); 
@@ -74,4 +75,18 @@ export async function searchUser(req: Request, res: Response) {
         return res.status(500).json({message: "Failed to search users"});
     }
     
+}
+
+export async function getUsersPresence(req: Request, res: Response) {
+    const { userIds } = req.body;
+
+    if(!Array.isArray(userIds) || userIds.length ===  0 || userIds.length > 20) {
+        return res.status(400).send("userIds must be an array at max 20 size");
+    }
+
+    const presence = userIds.map((userId: string) => ({
+        userId,
+        online: isUserOnline(userId),
+    }));
+    return res.send(presence);
 }
