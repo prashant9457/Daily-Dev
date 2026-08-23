@@ -1,8 +1,8 @@
 import { parseCookie } from "cookie";
-import { verify } from "crypto";
 import http from "http";
 import { WebSocketServer } from "ws";
 import { verifyToken } from "../utils/verifyToken.js";
+import type { AuthenticatedWebSocket } from "./types.js";
 
 export function setupWebSocket(server: http.Server) {
     const wss = new WebSocketServer({
@@ -15,28 +15,34 @@ export function setupWebSocket(server: http.Server) {
         const token = cookies.token;
 
         if(!token) {
-            socket.write("HTTP/1.1 401 Unauthorized");
+            socket.write("HTTP/1.1 401 Unauthorized\r\n");
             socket.destroy();
             return;
         }
-
+        let userId : string;
         try {
 
             const decoded = verifyToken(token);
-            console.log("WebSocket authenticated: ", decoded._id);
+            userId = decoded._id;
 
         } catch {
-            socket.write("HTTP/1.1 401 Unauthorized");
+            socket.write("HTTP/1.1 401 Unauthorized\r\n");
             socket.destroy();
             return;
         }
+
+        wss.handleUpgrade(request, socket, head, (ws) => {
+            const authenticatedSocket = ws as AuthenticatedWebSocket;
+            authenticatedSocket.userId = userId;
+            wss.emit("connection", authenticatedSocket, request);
+        });
     });
 
-    wss.on('connection', (socket, request) => {
-        console.log("Authenticated WebSocket client connected");
+    wss.on('connection', (socket: AuthenticatedWebSocket) => {
+        console.log(`WebSocket client connected: ${socket.userId}`);
 
         socket.on('close', ()=> {
-            console.log("WebSocket client disconnected");
+            console.log(`WebSocket client disconnected: ${socket.userId}`);
         });
     });
 
