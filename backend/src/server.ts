@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import app from "./app.js";
 import connectDB from './db.js';
 import http from "http";
-import { WebSocketServer } from "ws";
+import { setupWebSocket } from "./websocket/websocket.server.js";
 
 dotenv.config();
 
@@ -12,15 +12,8 @@ async function startServer() {
     await connectDB();
     // both websocket and http share the same server
     const server = http.createServer(app);
-    const wss = new WebSocketServer({server});
-
-    wss.on("connection", (socket) => {
-        console.log("WebSocket client connected");
-        
-        socket.on("close", () => {
-            console.log("WebSocket client disconnected");
-        });
-    });
+    
+    setupWebSocket(server);
 
     server.listen((port), () => { console.log(`Server Running on ${port}`); });
 }

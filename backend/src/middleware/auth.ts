@@ -1,13 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import config from 'config';
+import { verifyToken } from '../utils/verifyToken.js';
 
 export default function auth(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.token;
     if(!token) return res.status(401).send('Access denied. No token provided.')
     
     try {
-        const decoded = jwt.verify(token, config.get('jwtPrivateKey')) as {_id: string};
+        const decoded = verifyToken(token);
         req.user = decoded;
         next();
     } catch(ex) {
